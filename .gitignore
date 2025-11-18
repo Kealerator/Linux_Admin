@@ -1,4 +1,5 @@
-*/venv/*
+lemp-app/venv/
+myapp/venv/
 *.csv
 .*
 */__pycache__/*
