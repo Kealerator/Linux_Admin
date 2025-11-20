@@ -1,17 +1,21 @@
 from flask import Flask
 import mysql.connector
+import toml
 
 app = Flask(__name__)
 
+# Load the secrets from the full path of secrets.toml
+secrets = toml.load('/home/ubuntu/myapp/.streamlit/secrets.toml')
+
 @app.route('/')
 def home():
-    # Connect to MySQL/MariaDB
+    # Connect to MySQL/MariaDB using credentials from secrets.toml
     conn = mysql.connector.connect(
-            host="localhost",
-            user="exampleuser",
-            password="LiirumLaarum123#",
-            database="exampledb"
-            )
+        host=secrets["connections"]["mysql"]["host"],
+        user=secrets["connections"]["mysql"]["username"],
+        password=secrets["connections"]["mysql"]["password"],
+        database=secrets["connections"]["mysql"]["database"]
+    )
 
     cursor = conn.cursor()
     cursor.execute("SELECT CURRENT_TIMESTAMP")
@@ -58,4 +62,3 @@ def home():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
